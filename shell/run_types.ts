@@ -6,10 +6,10 @@ interface ExtensionRunOptionsExtension {
 
 export type FullRunOptions = Deno.RunOptions & ExtensionRunOptionsExtension;
 
-type OmittedUserRunOptionKeys = "cmd" | "stdout" | "stderr" | "stdin";
+type OmittedUserRunOptionKeys = 'cmd' | 'stdout' | 'stderr' | 'stdin';
 export type UserRunOptions = Omit<FullRunOptions, OmittedUserRunOptionKeys>;
 
-type OmittedUserTryOptionKeys = "throwOnError";
+type OmittedUserTryOptionKeys = 'throwOnError';
 export type UserTryOptions = Omit<UserRunOptions, OmittedUserTryOptionKeys>;
 
 export interface ProcessResult {

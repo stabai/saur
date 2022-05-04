@@ -1,5 +1,5 @@
-import { ProcessError } from "./process_error.ts";
-import { FullRunOptions, PipedProcessResult, ProcessResult, UserRunOptions, UserTryOptions } from "./run_types.ts";
+import { ProcessError } from './process_error.ts';
+import { FullRunOptions, PipedProcessResult, ProcessResult, UserRunOptions, UserTryOptions } from './run_types.ts';
 
 interface PipedRunOptions extends FullRunOptions {
   stdout: 'piped';
@@ -32,8 +32,8 @@ function runStreamed(
 ): Promise<ProcessResult> {
   const fullOptions: FullRunOptions = {
     cmd: buildCommandArray(command),
-    stdout: "inherit",
-    stderr: "inherit",
+    stdout: 'inherit',
+    stderr: 'inherit',
     ...options,
   };
   return run(fullOptions);
@@ -45,8 +45,8 @@ function runPiped(
 ): Promise<PipedProcessResult> {
   const fullOptions: PipedRunOptions = {
     cmd: buildCommandArray(command),
-    stdout: "piped",
-    stderr: "piped",
+    stdout: 'piped',
+    stderr: 'piped',
     ...options,
   };
   return run(fullOptions);
@@ -86,9 +86,9 @@ async function run(options: FullRunOptions): Promise<ProcessResult> {
 function buildCommandArray(command: string | string[]): string[] {
   if (Array.isArray(command)) {
     return command;
-  } else if (Deno.build.os === "windows") {
-    return ["PowerShell.exe", "-Command", command];
+  } else if (Deno.build.os === 'windows') {
+    return ['PowerShell.exe', '-Command', command];
   } else {
-    return [Deno.env.get("SHELL") ?? "/bin/bash", "-c", command];
+    return [Deno.env.get('SHELL') ?? '/bin/bash', '-c', command];
   }
 }

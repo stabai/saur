@@ -1,6 +1,6 @@
 import { bold } from 'https://deno.land/std@0.137.0/fmt/colors.ts';
 import GraphemeBreaker from 'https://taisukef.github.io/grapheme-breaker-mjs/src/GraphemeBreaker.mjs';
-import { SYSTEM_EOL } from "../shell/platform.ts";
+import { SYSTEM_EOL } from '../shell/platform.ts';
 
 interface Breaker {
   break(text: string): string[];
