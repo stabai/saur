@@ -21,11 +21,11 @@ export function readChecksumFile(contents: string): ChecksumFileEntry[] {
 export async function verifyChecksumFile(checksums: ChecksumFileEntry[], directory = Deno.cwd()): Promise<void> {
   for (const entry of checksums) {
     const filePath = path.join(directory, entry.filePath);
-    await verifyChecksum(filePath, entry.expectedHash);
+    await verifyChecksumHash(filePath, entry.expectedHash);
   }
 }
 
-export async function verifyChecksum(filePath: string, expectedHash: string): Promise<void> {
+export async function verifyChecksumHash(filePath: string, expectedHash: string): Promise<void> {
   const actualHash = await hashFile(filePath);
   if (actualHash !== expectedHash) {
     const fileBaseName = path.basename(filePath);
