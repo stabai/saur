@@ -5,6 +5,7 @@ interface ExtensionRunOptionsExtension {
 }
 
 export type FullRunOptions = Deno.RunOptions & ExtensionRunOptionsExtension;
+export type FullUserRunOptions = Omit<FullRunOptions, 'cmd'>;
 
 type OmittedUserRunOptionKeys = 'cmd' | 'stdout' | 'stderr' | 'stdin';
 export type UserRunOptions = Omit<FullRunOptions, OmittedUserRunOptionKeys>;

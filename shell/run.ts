@@ -1,5 +1,12 @@
 import { ProcessError } from './process_error.ts';
-import { FullRunOptions, PipedProcessResult, ProcessResult, UserRunOptions, UserTryOptions } from './run_types.ts';
+import {
+  FullRunOptions,
+  FullUserRunOptions,
+  PipedProcessResult,
+  ProcessResult,
+  UserRunOptions,
+  UserTryOptions,
+} from './run_types.ts';
 
 interface PipedRunOptions extends FullRunOptions {
   stdout: 'piped';
@@ -8,12 +15,13 @@ interface PipedRunOptions extends FullRunOptions {
 
 export async function $(
   command: string | string[],
-  options: UserRunOptions = {},
+  options: FullUserRunOptions = {},
 ): Promise<string> {
   const result = await runPiped(buildCommandArray(command), options);
   return result.stdout;
 }
 
+$.run = runGeneric;
 $.piped = runPiped;
 $.streamed = runStreamed;
 $.try = tryRun;
@@ -36,7 +44,7 @@ function runStreamed(
     stderr: 'inherit',
     ...options,
   };
-  return run(fullOptions);
+  return runInternal(fullOptions);
 }
 
 function runPiped(
@@ -49,12 +57,23 @@ function runPiped(
     stderr: 'piped',
     ...options,
   };
-  return run(fullOptions);
+  return runInternal(fullOptions);
 }
 
-function run(options: PipedRunOptions): Promise<PipedProcessResult>;
-function run(options: FullRunOptions): Promise<ProcessResult>;
-async function run(options: FullRunOptions): Promise<ProcessResult> {
+function runGeneric(
+  command: string[] | string,
+  options: FullUserRunOptions = {},
+): Promise<ProcessResult> {
+  const fullOptions: FullRunOptions = {
+    cmd: buildCommandArray(command),
+    ...options,
+  };
+  return runInternal(fullOptions);
+}
+
+function runInternal(options: PipedRunOptions): Promise<PipedProcessResult>;
+function runInternal(options: FullRunOptions): Promise<ProcessResult>;
+async function runInternal(options: FullRunOptions): Promise<ProcessResult> {
   const proc = Deno.run(options);
 
   const isPiped = options.stdout === 'piped';
