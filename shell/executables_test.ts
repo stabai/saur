@@ -4,7 +4,7 @@ import { $ } from './run.ts';
 
 Deno.test('new file becomes executable', async () => {
   const filename = await Deno.makeTempFile();
-  Deno.writeTextFile(filename, 'echo "looks good"')
+  Deno.writeTextFile(filename, 'echo "looks good"');
   assertRejects(() => $([filename]), 'File execution succeeded before permission flag was set');
 
   await makeFileExecutable(filename);

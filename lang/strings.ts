@@ -1,4 +1,4 @@
-import { isNil } from "https://raw.githubusercontent.com/stabai/saur/main/lang/values.ts";
+import { isNil } from 'https://raw.githubusercontent.com/stabai/saur/main/lang/values.ts';
 
 export interface FormattingPattern {
   pattern: string;
