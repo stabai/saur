@@ -39,6 +39,11 @@ export async function currentBranch(options?: GitCommandOptions): Promise<string
   return result.trim();
 }
 
+export async function updateRemoteRefs(options?: GitCommandOptions): Promise<void> {
+  await $(['git', 'remote', 'update'], gitOptionsToRunOptions(options));
+}
+
+// Note: Run updateRemoteRefs before this to ensure that client knowledge of the origin is accurate.
 export async function commitsBehindOrigin(options?: GitCommitsBehindOriginOptions): Promise<number> {
   const localBranch = await currentBranch();
   const mainBranch = options?.mainBranch ?? localBranch;
