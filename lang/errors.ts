@@ -1,6 +1,6 @@
 export type LoggingFunction = (...data: unknown[]) => void;
 
-export function nonExplosively<T>(fn: () => Promise<T>): Promise<T | Error> {
+export async function nonExplosively<T>(fn: () => Promise<T>): Promise<T | Error> {
   try {
     return await fn();
   } catch (err) {
