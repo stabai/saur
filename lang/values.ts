@@ -17,3 +17,7 @@ export function isEmpty(value: unknown): value is null | undefined {
   }
   return false;
 }
+
+export function isNilOr<T>(value: T | null | undefined, defaultValue: T): value is null | undefined {
+  return isNil(value) || value === defaultValue;
+}
