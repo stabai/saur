@@ -30,8 +30,16 @@ async function tryRun(
   command: string[] | string,
   options: UserTryOptions = {},
 ): Promise<boolean> {
-  const result = await runPiped(command, { ...options, throwOnError: false });
-  return result.status.success;
+  try {
+    const result = await runPiped(command, { ...options, throwOnError: false });
+    return result.status.success;
+  } catch (err) {
+    if (err instanceof Deno.errors.NotFound) {
+      return false;
+    } else {
+      throw err;
+    }
+  }
 }
 
 function runStreamed(
