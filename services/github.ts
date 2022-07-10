@@ -1,3 +1,5 @@
+import { isNil } from '../lang/values.ts';
+
 export interface GitHubReleaseJson {
   html_url: string;
   tag_name: string;
@@ -26,6 +28,12 @@ export interface GitHubRepo {
 }
 
 export async function getRepoReleases(repo: GitHubRepo): Promise<GitHubReleaseJson[]> {
-  const jsonResponse = await fetch(`https://api.github.com/repos/${repo.ownerName}/${repo.repoName}/releases`);
-  return await jsonResponse.json();
+  const response = await fetch(`https://api.github.com/repos/${repo.ownerName}/${repo.repoName}/releases`);
+  const jsonResponse = await response.json();
+  if (isNil(jsonResponse.length)) {
+    // If the request fails for any reason, e.g. quota exceeded
+    throw new Error(`Unexpected GitHub API response: ${await response.text()}`)
+  } else {
+    return jsonResponse;
+  }
 }
