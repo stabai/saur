@@ -6,10 +6,14 @@ import { isNil } from '../lang/values.ts';
 
 export async function downloadFileTo(fileUrl: string, downloadDirectory?: string): Promise<string> {
   const destination: Destination = { file: basename(fileUrl) };
-  if (!isNil(downloadDirectory)) {
-    await ensureDir(downloadDirectory);
-    destination.dir = path.resolve(downloadDirectory);
+  try {
+    if (!isNil(downloadDirectory)) {
+      await ensureDir(downloadDirectory);
+      destination.dir = path.resolve(downloadDirectory);
+    }
+    const result = await download(fileUrl, destination);
+    return result.fullPath;
+  } catch (err) {
+    throw new Error(`Unable to download from URL ${fileUrl}`, err);
   }
-  const result = await download(fileUrl, destination);
-  return result.fullPath;
 }
