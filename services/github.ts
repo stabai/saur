@@ -32,7 +32,7 @@ export async function getRepoReleases(repo: GitHubRepo): Promise<GitHubReleaseJs
   const jsonResponse = await response.json();
   if (isNil(jsonResponse.length)) {
     // If the request fails for any reason, e.g. quota exceeded
-    throw new Error(`Unexpected GitHub API response: ${await response.text()}`)
+    throw new Error(`Unexpected GitHub API response: ${await response.text()}`);
   } else {
     return jsonResponse;
   }
